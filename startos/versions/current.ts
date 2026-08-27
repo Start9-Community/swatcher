@@ -4,18 +4,18 @@
 import { IMPOSSIBLE, VersionInfo } from '@start9labs/start-sdk'
 
 export const current = VersionInfo.of({
-  version: '0.1.1:6',
+  version: '0.1.2:1',
   releaseNotes: {
     en_US:
-      'Adds privacy-aware, branded transaction exports for copying readable text or saving a PNG image.',
+      'Adds stable case-insensitive tag colors, editable derivation coverage, safer bulk imports, removal confirmation, a favicon, transaction fixes, and wallet highlighting.',
     es_ES:
-      'Añade exportaciones de transacciones con marca y respetuosas con la privacidad, para copiar texto legible o guardar una imagen PNG.',
+      'Añade colores de etiqueta estables sin distinguir mayúsculas, cobertura de derivación editable, importaciones más seguras y resaltado de cartera.',
     de_DE:
-      'Fügt datenschutzgerechte, gebrandete Transaktionsexporte zum Kopieren als lesbaren Text oder Speichern als PNG-Bild hinzu.',
+      'Ergänzt stabile Tag-Farben ohne Beachtung der Großschreibung, bearbeitbare Ableitungsabdeckung, sicherere Massenimporte und Wallet-Hervorhebung.',
     pl_PL:
-      'Dodaje eksport transakcji z zachowaniem prywatności i własnym oznaczeniem — do skopiowania jako czytelny tekst lub zapisania jako obraz PNG.',
+      'Dodaje trwałe kolory etykiet niezależne od wielkości liter, edytowalny zakres derywacji, bezpieczniejszy import i wyróżnienie portfela.',
     fr_FR:
-      'Ajoute des exports de transaction personnalisés et respectueux de la vie privée, à copier sous forme de texte lisible ou à enregistrer en image PNG.',
+      'Ajoute des couleurs d’étiquette stables sans distinction de casse, une dérivation modifiable, des imports plus sûrs et la surbrillance du portefeuille.',
   },
   migrations: {
     up: async () => {},
