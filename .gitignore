@@ -6,5 +6,3 @@ node_modules/
 docker-images
 javascript
 ncc-cache
-/s-watcher
-data/

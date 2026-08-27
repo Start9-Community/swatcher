@@ -11,7 +11,7 @@
 
 [s/watcher](https://github.com/StellarStoic/swatcher) is a watch-only Bitcoin activity monitor: it tracks addresses, extended public keys, and output descriptors, and reports incoming and outgoing transactions. Every blockchain query is answered by the Electrs instance on this server, so no watched address is disclosed to a third-party explorer. Optional alerts go out over Telegram or NIP-17 encrypted Nostr messages.
 
-This repository holds the application as well as its package — the Go source under `cmd/` and `internal/` is s/watcher itself. `upstreamRepo` therefore names the author's repository while `packageRepo` names the fork CI builds from.
+The application is pinned as a git submodule at `swatcher/`; this repository holds only the StartOS package.
 
 - **Upstream repo:** <https://github.com/StellarStoic/swatcher>
 - **Wrapper repo:** <https://github.com/Start9-Community/swatcher>
@@ -37,11 +37,11 @@ This repository holds the application as well as its package — the Go source u
 
 ## Image and Container Runtime
 
-Built from this repository's own `Dockerfile`: a Go builder stage compiles a static binary, which is copied into an Alpine runtime carrying `su-exec`.
+Built from the pinned upstream source at `swatcher/` using upstream's own `Dockerfile`: a Go builder stage compiles a static binary, which is copied into an Alpine runtime carrying `su-exec`.
 
 | Property      | Value                                             |
 | ------------- | ------------------------------------------------- |
-| Image         | Built here — no third-party or upstream image     |
+| Image         | Built from upstream source — no prebuilt image    |
 | Architectures | x86_64, aarch64                                   |
 | Entrypoint    | Replaced (see below)                              |
 | User          | Starts as `root`, runs as `swatcher`              |

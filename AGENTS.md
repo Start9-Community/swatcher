@@ -26,7 +26,10 @@ verified, tried, and decided belongs in the commit message and the PR body.
 
 ## This repo
 
-**This repo holds the application as well as its package.** The Go source under `cmd/` and `internal/` is s/watcher itself, built by the root `Dockerfile`; `startos/` packages it. So `upstreamRepo` and `packageRepo` name different repositories on purpose — upstream is the author's, the package is the fork CI builds and releases from.
+**The application is a submodule; this repo is packaging only.** `swatcher/` pins
+[StellarStoic/swatcher](https://github.com/StellarStoic/swatcher) and is built by upstream's own
+`Dockerfile` — never edit inside it, and never copy application source back out of it. Bumps go
+through `UPDATING.md`.
 
 Invariants a change must not break:
 
@@ -34,11 +37,4 @@ Invariants a change must not break:
 - **Blockchain data comes from the Electrs dependency.** Never fall back to a public explorer API — the whole point of the package is that no address is disclosed to a third party.
 - **`/data` holds two application secrets** — the generated Nostr sender `nsec` in `notifications.json` and the Telegram bot token. Neither may reach the logs or an unauthenticated web response.
 - **The daemon starts as root only to `chown` the volume,** then drops to the unprivileged `swatcher` user with `su-exec`. Anything writing into `/data` from the service container or a temporary subcontainer runs as root and must `chown swatcher:swatcher` what it wrote, or the app cannot rewrite it.
-
-Run the Go gate alongside the TypeScript one:
-
-```sh
-go test ./cmd/... ./internal/...
-go vet ./cmd/... ./internal/...
-npm run check
-```
+- **The file models mirror structs upstream owns.** `startos/fileModels/state.json.ts` and `notifications.json.ts` read files the application writes; a submodule bump can invalidate them.

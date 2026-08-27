@@ -1,0 +1,3 @@
+[submodule "swatcher"]
+	path = swatcher
+	url = https://github.com/StellarStoic/swatcher.git
