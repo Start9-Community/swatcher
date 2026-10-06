@@ -18,23 +18,27 @@ Freshly scaffolded? Work the
 guide page, not a file in this repo — read it, don't copy it in.
 
 Keep `README.md` (technical reference for an AI support or administering agent) and
-`instructions.md` (end-user docs) in sync with your changes.
+`instructions.md` (end-user docs) in sync with your changes. This file restates neither:
+whoever changes the package has both, so it carries only what they don't — repo mechanics,
+a change that looks right and is not, where the next thing gets added, a naming trap, a
+build or test invocation particular to this repo.
 
-**Bugs and feature requests are GitHub issues on this repo** — file them as you find them.
+**Fix a defect you spot rather than reporting it** — you have the package open and the
+context to be sure. File **a GitHub issue on this repo** only when the call isn't yours to
+make: you can't pin the cause down, two defensible fixes exist, or it's too large to ride on
+the work in hand. An open issue is a report, not a queue — implement one when you're asked
+to or when it's labelled `Approved`, then close it with `Closes #<n>`.
+
 Don't record work in the repo instead: no `TODO.md`, no `NOTES.md`, no `PLAN.md`. What you
 verified, tried, and decided belongs in the commit message and the PR body.
 
 ## This repo
 
-**The application is a submodule; this repo is packaging only.** `swatcher/` pins
-[StellarStoic/swatcher](https://github.com/StellarStoic/swatcher) and is built by upstream's own
-`Dockerfile` — never edit inside it, and never copy application source back out of it. Bumps go
-through `UPDATING.md`.
-
-Invariants a change must not break:
-
-- **s/watcher is watch-only.** Never accept, request, log, or persist a Bitcoin private key, WIF, extended private key, or seed phrase. Public extended keys and descriptors are accepted and are privacy-sensitive, not spending secrets.
-- **Blockchain data comes from the Electrs dependency.** Never fall back to a public explorer API — the whole point of the package is that no address is disclosed to a third party.
-- **`/data` holds two application secrets** — the generated Nostr sender `nsec` in `notifications.json` and the Telegram bot token. Neither may reach the logs or an unauthenticated web response.
-- **The daemon starts as root only to `chown` the volume,** then drops to the unprivileged `swatcher` user with `su-exec`. Anything writing into `/data` from the service container or a temporary subcontainer runs as root and must `chown swatcher:swatcher` what it wrote, or the app cannot rewrite it.
-- **The file models mirror structs upstream owns.** `startos/fileModels/state.json.ts` and `notifications.json.ts` read files the application writes; a submodule bump can invalidate them.
+- **`swatcher/` is the upstream application, pinned as a submodule.** Never edit inside it or
+  copy its source out; bumps go through `UPDATING.md`.
+- **Never accept, request, log, or persist a Bitcoin spending secret** — private key, WIF,
+  extended private key, or seed phrase. Public extended keys and descriptors are fine.
+- **Never fall back to a public explorer API.** Blockchain data comes from the Electrs
+  dependency alone; no watched address may reach a third party.
+- **Keep the Nostr sender `nsec` and the Telegram bot token in `/data` out of the logs** and out
+  of any unauthenticated web response.

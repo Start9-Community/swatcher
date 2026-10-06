@@ -38,10 +38,16 @@ const inputSpec = InputSpec.of({
   }),
   quietHours: Value.toggle({
     name: i18n('Enable quiet hours for immediate messages'),
+    description: i18n(
+      'Immediate messages are held during the hours below and sent once they end. Has no effect while the daily digest is on.',
+    ),
     default: false,
   }),
   quietStart: Value.number({
     name: i18n('Quiet hours start'),
+    description: i18n(
+      'The first quiet hour, in local time (the UTC offset below). Setting start and end to the same hour makes every hour quiet.',
+    ),
     required: true,
     default: 22,
     integer: true,
@@ -51,6 +57,7 @@ const inputSpec = InputSpec.of({
   }),
   quietEnd: Value.number({
     name: i18n('Quiet hours end'),
+    description: i18n('Held messages go out from this hour on, in local time.'),
     required: true,
     default: 7,
     integer: true,

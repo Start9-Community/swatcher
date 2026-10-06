@@ -2,13 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 import { setupManifest } from '@start9labs/start-sdk'
-import {
-  electrsDescription,
-  long,
-  mempoolDescription,
-  short,
-  torDescription,
-} from './i18n'
+import { long, short } from './i18n'
 
 export const manifest = setupManifest({
   id: 's-watcher',
@@ -29,32 +23,6 @@ export const manifest = setupManifest({
         },
       },
       arch: ['x86_64', 'aarch64'],
-    },
-  },
-  dependencies: {
-    electrs: {
-      description: electrsDescription,
-      optional: false,
-      metadata: {
-        title: 'Electrs',
-        icon: 'https://raw.githubusercontent.com/Start9Labs/electrs-startos/refs/heads/master/icon.svg',
-      },
-    },
-    mempool: {
-      description: mempoolDescription,
-      optional: true,
-      metadata: {
-        title: 'Mempool',
-        icon: 'https://raw.githubusercontent.com/Start9Labs/mempool-startos/refs/heads/master/icon.svg',
-      },
-    },
-    tor: {
-      description: torDescription,
-      optional: true,
-      metadata: {
-        title: 'Tor',
-        icon: 'https://raw.githubusercontent.com/Start9Labs/tor-startos/refs/heads/master/icon.svg',
-      },
     },
   },
 })

@@ -47,7 +47,7 @@ const dict = {
   'Discovery gap saved': 40,
   's/watcher will keep ${gap} unused addresses beyond the highest used wallet address under observation.': 41,
   'Web Interface theme': 42,
-  'The color swatches beside each name preview its palette.': 43,
+  '- Bitcoin Night: dark, with orange accents\n- Cypherpunk Neon: dark purple, with pink accents\n- Arctic Node: dark blue, with light blue accents\n- Forest Ledger: dark green, with yellow accents\n- Paper Ledger: light, with orange accents': 43,
   '🟧 ⬛ Bitcoin Night': 44,
   '🟪 🩷 Cypherpunk Neon': 45,
   '🟦 🩵 Arctic Node': 46,
@@ -99,6 +99,9 @@ const dict = {
   'Nostr sender key must be a valid nsec': 92,
   'I will not accept this key. You pasted an nsec, which is your secret private key. Please do not paste your nsec into websites. You got away with it here because this is your own server, but a malicious website could easily compromise your Nostr identity. Remember: nsec is secret—protect it. Now provide your npub, your public key.': 93,
   'The Nostr recipient must be a valid npub public key.': 94,
+  'Immediate messages are held during the hours below and sent once they end. Has no effect while the daily digest is on.': 95,
+  'The first quiet hour, in local time (the UTC offset below). Setting start and end to the same hour makes every hour quiet.': 96,
+  'Held messages go out from this hour on, in local time.': 97,
 } as const
 
 export type I18nKey = keyof typeof dict

@@ -68,9 +68,7 @@ export const smartDiscovery = sdk.Action.withInput(
       title: i18n('Discovery gap saved'),
       message: i18n(
         's/watcher will keep ${gap} unused addresses beyond the highest used wallet address under observation.',
-        // String, not number: the SDK formats a numeric param through
-        // Intl.NumberFormat, which throws on the container's LANG=C.UTF-8.
-        { gap: String(input.gap) },
+        { gap: input.gap },
       ),
       result: null,
     }

@@ -6,7 +6,7 @@ import { sdk } from '../sdk'
 
 export const notificationConfig = FileHelper.json(
   { base: sdk.volumes.main, subpath: '/notifications.json' },
-  z.object({
+  z.looseObject({
     telegramEnabled: z.boolean().catch(false),
     telegramToken: z.string().catch(''),
     telegramChatId: z.string().catch(''),
