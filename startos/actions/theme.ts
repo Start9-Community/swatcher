@@ -10,7 +10,7 @@ const inputSpec = InputSpec.of({
   theme: Value.select({
     name: i18n('Web Interface theme'),
     description: i18n(
-      'The color swatches beside each name preview its palette.',
+      '- Bitcoin Night: dark, with orange accents\n- Cypherpunk Neon: dark purple, with pink accents\n- Arctic Node: dark blue, with light blue accents\n- Forest Ledger: dark green, with yellow accents\n- Paper Ledger: light, with orange accents',
     ),
     default: 'bitcoin-night',
     values: {

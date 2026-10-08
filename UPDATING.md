@@ -33,9 +33,9 @@ upstream source, pinned as a git submodule at `swatcher/` and built by upstream'
 2. Bump `version` in `startos/versions/current.ts` to `<upstream version>:0`. A change to the
    packaging alone bumps only the revision after the colon.
 
-3. Write `releaseNotes` for every locale in `startos/i18n/dictionaries/translations.ts`.
+3. Write `releaseNotes` for every locale in `startos/versions/current.ts`.
 
 4. Re-check the file models against upstream when the release touches `/data`.
    `startos/fileModels/state.json.ts` and `notifications.json.ts` mirror structs the
-   application owns; both use `.passthrough()`, so a new upstream field is tolerated, but a
+   application owns; both are `z.looseObject`, so a new upstream field is tolerated, but a
    renamed or retyped one is not.

@@ -79,12 +79,7 @@ export const privacyMode = sdk.Action.withInput(
             `s-watcher set-privacy-mode ${input.privacyMode ? 'enabled' : 'disabled'} && chown swatcher:swatcher /data/state.json`,
           ],
           {
-            // The binary reads stdin unconditionally, but only verifies the
-            // password when disabling. Send a newline rather than an empty
-            // string when it is unused: the SDK skips its stdin write — and
-            // the close that goes with it — for a falsy `input`, leaving the
-            // read to block until the exec is killed.
-            input: input.password || '\n',
+            input: input.password ?? undefined,
             user: 'root',
             env: { SWATCHER_DATA: '/data' },
           },
