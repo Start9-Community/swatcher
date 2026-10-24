@@ -63,10 +63,11 @@ text. The color is stable across reloads and ignores letter case, so `Peach`,
 Extended keys and ranged descriptors derive addresses until the selected number
 of consecutive unused indexes exists beyond the highest used address. Change
 the gap with **Actions → General → Smart Wallet Discovery**. A larger gap finds
-wallets that skipped more indexes but makes more local Electrs queries.
+wallets that skipped more indexes but creates more local Electrs subscriptions
+and requires a larger initial scan.
 
-There is no application-level address limit. Large gaps can create substantial
-local Electrs traffic and a large state file, so increase them deliberately.
+There is no application-level address limit. Large gaps can create many local
+Electrs subscriptions and a large state file, so increase them deliberately.
 Reducing the global gap never deletes addresses already saved. Newly derived
 historical addresses are baselined without false notifications.
 
