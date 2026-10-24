@@ -37,7 +37,7 @@ The application is pinned as a git submodule at `swatcher/`; this repository hol
 
 ## Image and Container Runtime
 
-Built from the pinned upstream source at `swatcher/` using upstream's own `Dockerfile`: a Go builder stage compiles a static binary, which is copied into an Alpine runtime carrying `su-exec`.
+Built from the pinned upstream source at `swatcher/` by the package's own `Dockerfile`, which mirrors upstream's: a Go builder stage compiles a static binary, which is copied into an Alpine runtime carrying `su-exec` and a current CA bundle. The package's `Dockerfile` is temporary and gives way to upstream's once upstream builds with Go 1.26.10 or later and refreshes its Alpine CA bundle.
 
 | Property      | Value                                             |
 | ------------- | ------------------------------------------------- |

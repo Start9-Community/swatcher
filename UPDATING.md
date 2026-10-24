@@ -1,8 +1,9 @@
 # Updating the upstream version
 
 This package builds its image from the [`swatcher`](https://github.com/StellarStoic/swatcher)
-upstream source, pinned as a git submodule at `swatcher/` and built by upstream's own
-`Dockerfile`. "Upstream" here means that source repo.
+upstream source, pinned as a git submodule at `swatcher/` and built by the package's root
+`Dockerfile`, a copy of upstream's with a newer Go builder and a CA refresh layer.
+"Upstream" here means that source repo.
 
 ## Determining the upstream version
 
@@ -33,9 +34,12 @@ upstream source, pinned as a git submodule at `swatcher/` and built by upstream'
 2. Bump `version` in `startos/versions/current.ts` to `<upstream version>:0`. A change to the
    packaging alone bumps only the revision after the colon.
 
-3. Write `releaseNotes` for every locale in `startos/versions/current.ts`.
+3. Diff upstream's `swatcher/Dockerfile` across the bump and carry any change into the root
+   `Dockerfile`, keeping its Go builder at or above upstream's and its CA layer.
 
-4. Re-check the file models against upstream when the release touches `/data`.
+4. Write `releaseNotes` for every locale in `startos/versions/current.ts`.
+
+5. Re-check the file models against upstream when the release touches `/data`.
    `startos/fileModels/state.json.ts` and `notifications.json.ts` mirror structs the
    application owns; both are `z.looseObject`, so a new upstream field is tolerated, but a
    renamed or retyped one is not.
