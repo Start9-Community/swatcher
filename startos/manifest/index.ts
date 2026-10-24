@@ -18,7 +18,7 @@ export const manifest = setupManifest({
     's-watcher': {
       source: {
         dockerBuild: {
-          dockerfile: './swatcher/Dockerfile',
+          dockerfile: './Dockerfile',
           workdir: './swatcher',
         },
       },
