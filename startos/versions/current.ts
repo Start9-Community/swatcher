@@ -4,17 +4,17 @@
 import { IMPOSSIBLE, VersionInfo } from '@start9labs/start-sdk'
 
 export const current = VersionInfo.of({
-  version: '0.1.2:3',
+  version: '0.1.3:0',
   releaseNotes: {
     en_US:
-      'Updated the Go toolchain the service is built with. Stops trusting certificates from a compromised certificate authority (eMudhra).',
+      'Uses persistent Electrum subscriptions to stop repeated unsubscribed-script-hash warnings, reduce idle queries, refresh changed watches promptly, and reconnect automatically after Electrs restarts.',
     es_ES:
-      'Se actualizó la cadena de herramientas Go con la que se compila el servicio. Deja de confiar en los certificados de una autoridad de certificación comprometida (eMudhra).',
+      'Usa suscripciones Electrum persistentes para eliminar los avisos repetidos sobre hashes de script no suscritos, reducir las consultas inactivas, actualizar rápidamente los monitores modificados y reconectarse automáticamente tras reiniciar Electrs.',
     de_DE:
-      'Die Go-Toolchain, mit der der Dienst gebaut wird, wurde aktualisiert. Vertraut Zertifikaten einer kompromittierten Zertifizierungsstelle (eMudhra) nicht mehr.',
+      'Verwendet dauerhafte Electrum-Abonnements, um wiederholte Warnungen zu nicht abonnierten Skript-Hashes zu vermeiden, Leerlaufabfragen zu reduzieren, geänderte Watches zeitnah zu aktualisieren und nach Electrs-Neustarts automatisch neu zu verbinden.',
     pl_PL:
-      'Zaktualizowano zestaw narzędzi Go, którym budowana jest usługa. Przestaje ufać certyfikatom przejętego urzędu certyfikacji (eMudhra).',
-    fr_FR: `Mise à jour de la chaîne d’outils Go utilisée pour compiler le service. Ne fait plus confiance aux certificats d'une autorité de certification compromise (eMudhra).`,
+      'Używa trwałych subskrypcji Electrum, aby usunąć powtarzające się ostrzeżenia o niesubskrybowanych skrótach skryptów, ograniczyć bezczynne zapytania, szybko odświeżać zmienione obserwacje i automatycznie łączyć się ponownie po restarcie Electrs.',
+    fr_FR: `Utilise des abonnements Electrum persistants pour supprimer les avertissements répétés concernant les hachages de script non abonnés, réduire les requêtes inutiles, actualiser rapidement les surveillances modifiées et se reconnecter automatiquement après un redémarrage d'Electrs.`,
   },
   migrations: {
     up: async () => {},

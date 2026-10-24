@@ -127,6 +127,8 @@ Nothing is seeded at install and no credential is generated. **A new installatio
 
 From there the whole flow is inside the Web UI: add a watch, and the first Electrs scan establishes the baseline. That first scan deliberately imports existing history **without** sending notifications for it — otherwise a wallet with years of transactions would deliver years of alerts on the day it was added.
 
+The daemon keeps one reconnecting Electrum session and subscribes to every watched script hash before requesting its history or balance. Unchanged watches reuse their cached snapshot; an Electrs subscription notification triggers a prompt refresh, while the 30-second interval remains a reconnection and safety fallback. This avoids repeated unsubscribed-script-hash warnings and idle full-wallet polling.
+
 Transaction history is paginated at 100 transactions per page. Within each transaction card, address lists longer than 10 rows are collapsed to the first 10 and can be expanded on demand; text exports still include the complete list.
 
 Removing a saved watch requires a second, named Yes/No confirmation so an accidental click cannot immediately delete it.
@@ -178,7 +180,7 @@ Masking is a Web UI behavior only. Notification messages still carry full amount
 
 - **When to run it:** when an extended key or ranged descriptor is missing addresses — a wallet that skipped indexes needs a larger gap than the default.
 - **What it changes:** the discovery gap in `state.json`. **Lowering it never deletes addresses already derived**; it only stops new derivation beyond the new limit.
-- **Cost:** a few seconds and a restart, but the consequence is ongoing: every extra index is more Electrs queries on every scan. There is no application-level cap, so unusually large values should be increased deliberately.
+- **Cost:** a few seconds and a restart. Every extra index adds a persistent Electrs subscription plus initial and change-driven queries. There is no application-level cap, so unusually large values should be increased deliberately.
 - **Repeat safety:** idempotent. Newly derived historical addresses are baselined without firing notifications, the same as a new watch.
 - **Outputs:** none.
 
@@ -221,7 +223,7 @@ Nothing needs rebuilding on restore, but Electrs does need to be present and syn
 1. **Bitcoin mainnet only.** Testnet, signet, and regtest are not supported.
 2. **Watch-only, by design.** No transaction construction, signing, or spending, and no private key, WIF, extended private key, or seed phrase is ever accepted.
 3. **Hardened derivation below an extended key is impossible** and is rejected. Descriptors need a public extended key and a non-hardened wildcard path.
-4. **Address discovery is operator-controlled.** There is no application-level address cap. The global gap and each extended-key or ranged-descriptor watch can be increased, but large values increase Electrs traffic, scan time, memory use, and backup size.
+4. **Address discovery is operator-controlled.** There is no application-level address cap. The global gap and each extended-key or ranged-descriptor watch can be increased, but large values increase the initial Electrs scan, subscription count, memory use, and backup size.
 5. **Runes and Ordinals are detected only.** No content is decoded, rendered, fetched, or linked.
 6. **Input addresses are not sender identity.** They identify the outputs a transaction consumed, which is transaction-level evidence and nothing more.
 7. **Telegram, and Nostr over clearnet relays, disclose notification traffic** to that provider or relay. Electrs queries stay local either way.
