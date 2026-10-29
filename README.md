@@ -37,7 +37,7 @@ The application is pinned as a git submodule at `swatcher/`; this repository hol
 
 ## Image and Container Runtime
 
-Built from the pinned upstream source at `swatcher/` by the package's own `Dockerfile`, which mirrors upstream's: a Go builder stage compiles a static binary, which is copied into an Alpine runtime carrying `su-exec` and a current CA bundle. The package's `Dockerfile` is temporary and gives way to upstream's once upstream builds with Go 1.26.10 or later and refreshes its Alpine CA bundle.
+Built from the pinned upstream source at `swatcher/` with upstream's hardened `Dockerfile`: Go 1.26.10 compiles a static binary, which is copied into an Alpine runtime carrying `su-exec` and the refreshed CA bundle.
 
 | Property      | Value                                             |
 | ------------- | ------------------------------------------------- |
@@ -127,7 +127,7 @@ Nothing is seeded at install and no credential is generated. **A new installatio
 
 From there the whole flow is inside the Web UI: add a watch, and the first Electrs scan establishes the baseline. That first scan deliberately imports existing history **without** sending notifications for it — otherwise a wallet with years of transactions would deliver years of alerts on the day it was added.
 
-The daemon keeps one reconnecting Electrum session and subscribes to every watched script hash before requesting its history or balance. Unchanged watches reuse their cached snapshot; an Electrs subscription notification triggers a prompt refresh, while the 30-second interval remains a reconnection and safety fallback. This avoids repeated unsubscribed-script-hash warnings and idle full-wallet polling.
+The daemon keeps one reconnecting Electrum session and persists the status hash for every watched script. Subscription notifications refresh only the exact script hashes that changed. The 30-second recovery check selects only new, failed, dirty, or disconnected watches, and restarts resubscribe without rereading unchanged history and balances. Refreshes above 1,000 scripts are paced at 50 scripts per second to protect Electrs during a first baseline or reconnection.
 
 Transaction history is paginated at 100 transactions per page. Within each transaction card, address lists longer than 10 rows are collapsed to the first 10 and can be expanded on demand; text exports still include the complete list.
 

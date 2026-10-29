@@ -32,6 +32,11 @@ are included in backups.
 If you forget the Web UI password, run **Set Web Password** again. Replacing it
 signs out existing browser sessions but does not remove watches.
 
+After the baseline, s/watcher refreshes only addresses that Electrs reports as
+changed. It remembers each address status across restarts, and large baselines
+or reconnects are paced to avoid overwhelming Electrs. A very large first scan
+can therefore take several minutes while the service remains responsive.
+
 ## Adding watches
 
 The Web UI accepts:
