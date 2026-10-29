@@ -4,7 +4,7 @@
   "dependencies": {
     "@noble/curves": "^1.9.7",
     "@scure/base": "^1.2.6",
-    "@start9labs/start-sdk": "3.1.0"
+    "@start9labs/start-sdk": "3.1.1"
   },
   "overrides": {
     "@start9labs/start-sdk": "$@start9labs/start-sdk"
