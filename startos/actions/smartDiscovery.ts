@@ -16,6 +16,7 @@ const inputSpec = InputSpec.of({
     default: 20,
     integer: true,
     min: 1,
+    max: 500,
     step: 1,
     units: i18n('addresses'),
   }),
@@ -37,7 +38,10 @@ export const smartDiscovery = sdk.Action.withInput(
   inputSpec,
   async ({ effects }) => {
     const state = await stateConfig.read().const(effects)
-    return { gap: state?.discoveryGap ?? 20 } satisfies SmartDiscoveryInput
+    const savedGap = state?.discoveryGap ?? 20
+    return {
+      gap: Math.min(500, Math.max(1, savedGap)),
+    } satisfies SmartDiscoveryInput
   },
   async ({ effects, input }) => {
     const mounts = sdk.Mounts.of().mountVolume({

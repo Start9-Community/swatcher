@@ -32,6 +32,23 @@ are included in backups.
 If you forget the Web UI password, run **Set Web Password** again. Replacing it
 signs out existing browser sessions but does not remove watches.
 
+After the baseline, s/watcher refreshes only addresses that Electrs reports as
+changed. It remembers each address status across restarts, and large baselines
+or reconnects are limited to two workers and five scripts per second to avoid
+overwhelming Electrs. Funded, previously used, and newly added addresses are
+checked first. Once subscribed, transaction activity still triggers its
+targeted refresh immediately. A large first scan can therefore take several
+minutes while the service remains responsive. The dashboard shows how many
+addresses have completed, and the service log writes a heartbeat every 30
+seconds. Progress is saved every 500 addresses. If
+Electrs stops responding, s/watcher pauses after repeated failures, preserves
+the last saved balances and history, and retries unfinished addresses
+automatically.
+
+The same recovery timer keeps notification delivery moving when no address has
+changed. Failed Telegram or Nostr messages retry, quiet-hours queues resume,
+and daily digests can fire on schedule even while every watch is idle.
+
 ## Adding watches
 
 The Web UI accepts:
@@ -39,7 +56,8 @@ The Web UI accepts:
 - A Bitcoin mainnet address.
 - An account-level `xpub`, `ypub`, or `zpub`.
 - A `pkh()`, `wpkh()`, `sh(wpkh())`, or `tr()` output descriptor.
-- A bulk list of between 2 and 10,000 unique mainnet addresses.
+- A bulk list of between 2 and 2,000 unique mainnet addresses, subject to the
+  2,000-address service limit.
 
 A bare `xpub` does not identify its address type, so select Legacy, Nested
 SegWit, Native SegWit, or Taproot. `ypub`, `zpub`, descriptors, and individual
@@ -66,16 +84,22 @@ the gap with **Actions → General → Smart Wallet Discovery**. A larger gap fi
 wallets that skipped more indexes but creates more local Electrs subscriptions
 and requires a larger initial scan.
 
-There is no application-level address limit. Large gaps can create many local
-Electrs subscriptions and a large state file, so increase them deliberately.
-Reducing the global gap never deletes addresses already saved. Newly derived
-historical addresses are baselined without false notifications.
+For everyday use, keep s/watcher at **500 watched addresses or fewer**. The
+dashboard warns above 500 and shows a stronger warning above 1,000. One xpub or
+descriptor may derive at most 1,000 addresses, the whole service may watch at
+most 2,000, and the discovery gap may be at most 500 indexes per branch.
+Existing installations above these limits are preserved, but cannot add or
+expand coverage until they are reduced. Reducing the global gap never deletes
+addresses already saved. Newly derived historical addresses are baselined
+without false notifications.
 
-To expand one existing extended-key or ranged-descriptor watch, select **Edit**
-and increase **Watched indexes per branch**. Existing balances, transactions,
-and notes remain intact; only the additional addresses are derived and
-baselined. The value cannot be reduced. A receive-and-change watch derives that
-many indexes on each branch, so a value of 100 watches 200 addresses.
+To change one existing extended-key or ranged-descriptor watch, select **Edit**
+and adjust **Watched indexes per branch**. Existing balances, transactions, and
+notes remain intact. Reductions require confirmation and cannot remove a known
+active index or the discovery gap beyond it. Removed trailing addresses stop
+receiving notifications, and s/watcher reconnects to Electrs so their obsolete
+subscriptions are released. A receive-and-change watch derives the selected
+number on each branch, so a value of 100 watches 200 addresses.
 
 ### Bulk import and combine
 

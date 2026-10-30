@@ -4,17 +4,17 @@
 import { IMPOSSIBLE, VersionInfo } from '@start9labs/start-sdk'
 
 export const current = VersionInfo.of({
-  version: '0.1.3:0',
+  version: '0.1.7:0',
   releaseNotes: {
     en_US:
-      'Uses persistent Electrum subscriptions to stop repeated unsubscribed-script-hash warnings, reduce idle queries, refresh changed watches promptly, and reconnect automatically after Electrs restarts.',
+      'Protects Electrs from oversized watch sets with a 500-address everyday recommendation, clear load warnings, 1,000-address per-wallet and 2,000-address service limits, and refresh pacing of five scripts per second. Existing large watches remain saved and can now be safely reduced without losing known active coverage; obsolete subscriptions are released immediately. [Full release notes](https://github.com/StellarStoic/swatcher/releases/tag/v0.1.7_0).',
     es_ES:
-      'Usa suscripciones Electrum persistentes para eliminar los avisos repetidos sobre hashes de script no suscritos, reducir las consultas inactivas, actualizar rápidamente los monitores modificados y reconectarse automáticamente tras reiniciar Electrs.',
+      'Protege Electrs de conjuntos de vigilancia excesivos con una recomendación diaria de 500 direcciones, avisos claros, límites de 1.000 direcciones por monedero y 2.000 por servicio, y un ritmo de cinco scripts por segundo. Las vigilancias grandes existentes se conservan y ahora pueden reducirse de forma segura sin perder direcciones activas conocidas. [Notas completas](https://github.com/StellarStoic/swatcher/releases/tag/v0.1.7_0).',
     de_DE:
-      'Verwendet dauerhafte Electrum-Abonnements, um wiederholte Warnungen zu nicht abonnierten Skript-Hashes zu vermeiden, Leerlaufabfragen zu reduzieren, geänderte Watches zeitnah zu aktualisieren und nach Electrs-Neustarts automatisch neu zu verbinden.',
+      'Schützt Electrs vor übergroßen Watch-Sätzen: empfohlen sind höchstens 500 Adressen, mit klaren Warnungen, 1.000 Adressen pro Wallet, 2.000 insgesamt und fünf Skripten pro Sekunde. Bestehende große Watches bleiben gespeichert und können nun sicher verkleinert werden, ohne bekannte aktive Abdeckung zu verlieren. [Vollständige Versionshinweise](https://github.com/StellarStoic/swatcher/releases/tag/v0.1.7_0).',
     pl_PL:
-      'Używa trwałych subskrypcji Electrum, aby usunąć powtarzające się ostrzeżenia o niesubskrybowanych skrótach skryptów, ograniczyć bezczynne zapytania, szybko odświeżać zmienione obserwacje i automatycznie łączyć się ponownie po restarcie Electrs.',
-    fr_FR: `Utilise des abonnements Electrum persistants pour supprimer les avertissements répétés concernant les hachages de script non abonnés, réduire les requêtes inutiles, actualiser rapidement les surveillances modifiées et se reconnecter automatiquement après un redémarrage d'Electrs.`,
+      'Chroni Electrs przed zbyt dużymi zestawami obserwacji: zalecane jest 500 adresów, dostępne są jasne ostrzeżenia, limit 1.000 adresów na portfel i 2.000 łącznie oraz tempo pięciu skryptów na sekundę. Istniejące duże obserwacje pozostają zapisane i można je bezpiecznie zmniejszyć bez utraty znanych aktywnych adresów. [Pełne informacje o wydaniu](https://github.com/StellarStoic/swatcher/releases/tag/v0.1.7_0).',
+    fr_FR: `Protège Electrs des ensembles de surveillance trop grands avec une recommandation de 500 adresses, des avertissements clairs, des limites de 1 000 adresses par portefeuille et 2 000 au total, et cinq scripts par seconde. Les grandes surveillances existantes restent enregistrées et peuvent désormais être réduites sans perdre les adresses actives connues. [Notes de version complètes](https://github.com/StellarStoic/swatcher/releases/tag/v0.1.7_0).`,
   },
   migrations: {
     up: async () => {},
