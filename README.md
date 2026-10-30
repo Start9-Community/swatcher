@@ -39,12 +39,12 @@ The application is pinned as a git submodule at `swatcher/`; this repository hol
 
 Built from the pinned upstream source at `swatcher/` with upstream's hardened `Dockerfile`: Go 1.26.10 compiles a static binary, which is copied into an Alpine runtime carrying `su-exec` and the refreshed CA bundle.
 
-| Property      | Value                                             |
-| ------------- | ------------------------------------------------- |
-| Image         | Built from upstream source — no prebuilt image    |
-| Architectures | x86_64, aarch64                                   |
-| Entrypoint    | Replaced (see below)                              |
-| User          | Starts as `root`, runs as `swatcher`              |
+| Property      | Value                                          |
+| ------------- | ---------------------------------------------- |
+| Image         | Built from upstream source — no prebuilt image |
+| Architectures | x86_64, aarch64                                |
+| Entrypoint    | Replaced (see below)                           |
+| User          | Starts as `root`, runs as `swatcher`           |
 
 | Subcontainer | Purpose                                       |
 | ------------ | --------------------------------------------- |
@@ -54,13 +54,13 @@ The daemon replaces the image entrypoint with `sh -c 'chown swatcher:swatcher /d
 
 The package supplies the runtime's configuration entirely through environment variables:
 
-| Variable                | Supplies                                                              |
-| ----------------------- | --------------------------------------------------------------------- |
-| `SWATCHER_LISTEN`       | The web listen address                                                |
-| `SWATCHER_DATA`         | The volume mount point                                                |
-| `ELECTRUM_ADDR`         | The Electrs bridge address, resolved at start                         |
-| `SWATCHER_MEMPOOL_URLS` | JSON array of local Mempool addresses, empty when Mempool is absent   |
-| `TOR_SOCKS_ADDR`        | The Tor SOCKS bridge address, empty when Tor is absent                |
+| Variable                | Supplies                                                            |
+| ----------------------- | ------------------------------------------------------------------- |
+| `SWATCHER_LISTEN`       | The web listen address                                              |
+| `SWATCHER_DATA`         | The volume mount point                                              |
+| `ELECTRUM_ADDR`         | The Electrs bridge address, resolved at start                       |
+| `SWATCHER_MEMPOOL_URLS` | JSON array of local Mempool addresses, empty when Mempool is absent |
+| `TOR_SOCKS_ADDR`        | The Tor SOCKS bridge address, empty when Tor is absent              |
 
 Each is read once per launch, so a change to any of them takes effect on the next start. The daemon re-runs whenever `notifications.json` changes, which is what picks up new notification settings.
 
@@ -68,15 +68,15 @@ Each is read once per launch, so a change to any of them takes effect on the nex
 
 One volume holds everything, and the application is its primary writer.
 
-| Volume | Mount Point | Purpose                                          |
-| ------ | ----------- | ------------------------------------------------ |
-| `main` | `/data`     | Watches, history, credentials, and all settings  |
+| Volume | Mount Point | Purpose                                         |
+| ------ | ----------- | ----------------------------------------------- |
+| `main` | `/data`     | Watches, history, credentials, and all settings |
 
 | Path                       | Contents                                                                       |
 | -------------------------- | ------------------------------------------------------------------------------ |
-| `/data/state.json`         | Watches, derived addresses, observed activity, delivery state, and UI settings  |
-| `/data/auth.json`          | The Argon2id password verifier and the session-invalidation counter             |
-| `/data/notifications.json` | Telegram credentials and the generated Nostr sender identity                    |
+| `/data/state.json`         | Watches, derived addresses, observed activity, delivery state, and UI settings |
+| `/data/auth.json`          | The Argon2id password verifier and the session-invalidation counter            |
+| `/data/notifications.json` | Telegram credentials and the generated Nostr sender identity                   |
 
 The package keeps no `store.json`; there is no StartOS-side state outside the volume.
 
@@ -84,9 +84,9 @@ The package keeps no `store.json`; there is no StartOS-side state outside the vo
 
 Two models, and the ownership split between them is the thing to understand.
 
-| Model                | File                 | Format | Written by the package     |
-| -------------------- | -------------------- | ------ | -------------------------- |
-| `stateConfig`        | `state.json`         | JSON   | No — read only             |
+| Model                | File                 | Format | Written by the package            |
+| -------------------- | -------------------- | ------ | --------------------------------- |
+| `stateConfig`        | `state.json`         | JSON   | No — read only                    |
 | `notificationConfig` | `notifications.json` | JSON   | Yes — by the Notifications action |
 
 **`state.json` is the application's file.** It holds the watch list and every transaction s/watcher has observed, and the daemon rewrites it continuously. The package declares only the eight settings its actions expose and never writes the file: Privacy Mode, Privacy Indicators, Smart Wallet Discovery, and Theme each shell out to the application's own `s-watcher set-…` subcommand, which reads, edits, and rewrites the file, and then chown the result back to the service user. Undeclared keys are preserved because the model is read-only, so no packaging change can drop a watch. A hand edit does not survive: the daemon rewrites the file on its next scan.
@@ -99,11 +99,11 @@ Neither model is written during install or start, so a restored volume comes bac
 
 One required, two optional — and the optional two are declared to StartOS only once they are actually in use.
 
-| Service | Required | Health checks       | Purpose                                                                    |
-| ------- | -------- | ------------------- | -------------------------------------------------------------------------- |
-| Electrs | Yes      | `electrs`, `sync`   | Every address history, balance, transaction, and block-header query        |
-| Mempool | No       | `webui`             | Private explorer links from transaction IDs and address lookups            |
-| Tor     | No       | `tor`               | SOCKS transport for NIP-17 delivery to `.onion` relays                     |
+| Service | Required | Health checks     | Purpose                                                             |
+| ------- | -------- | ----------------- | ------------------------------------------------------------------- |
+| Electrs | Yes      | `electrs`, `sync` | Every address history, balance, transaction, and block-header query |
+| Mempool | No       | `webui`           | Private explorer links from transaction IDs and address lookups     |
+| Tor     | No       | `tor`             | SOCKS transport for NIP-17 delivery to `.onion` relays              |
 
 StartOS warns the user whenever a declared dependency is missing or stopped, which is the wrong prompt for a feature nobody opted into. So Mempool is declared only while it is installed, and Tor only while Nostr notifications are enabled **and** at least one configured relay is an `.onion` address — the only case in which the application routes anything through the proxy. Clearnet Telegram and Nostr traffic goes direct whether or not Tor is present.
 
@@ -113,9 +113,9 @@ No dependency volume is mounted. Electrs and Tor are reached over the StartOS br
 
 One interface, carrying both the dashboard and the HTTP endpoints behind it.
 
-| Interface | Id   | Type | Port | Description                     |
-| --------- | ---- | ---- | ---- | ------------------------------- |
-| Web UI    | `ui` | ui   | 8080 | Watch dashboard and history     |
+| Interface | Id   | Type | Port | Description                 |
+| --------- | ---- | ---- | ---- | --------------------------- |
+| Web UI    | `ui` | ui   | 8080 | Watch dashboard and history |
 
 The port is bound on the `ui` MultiHost over plain HTTP and is not masked. Nothing else is exposed: the service opens no peer port, and its outbound traffic is Electrs over the bridge plus, when notifications are configured, Telegram and Nostr relays.
 
@@ -127,7 +127,7 @@ Nothing is seeded at install and no credential is generated. **A new installatio
 
 From there the whole flow is inside the Web UI: add a watch, and the first Electrs scan establishes the baseline. That first scan deliberately imports existing history **without** sending notifications for it — otherwise a wallet with years of transactions would deliver years of alerts on the day it was added.
 
-The daemon keeps one reconnecting Electrum session and persists the status hash for every watched script. Subscription notifications refresh only the exact script hashes that changed. The 30-second recovery check selects only new, failed, dirty, or disconnected watches, and restarts resubscribe without rereading unchanged history and balances. Refreshes above 1,000 scripts are paced at 50 scripts per second to protect Electrs during a first baseline or reconnection.
+The daemon keeps one reconnecting Electrum session and persists the status hash for every watched script. Subscription notifications refresh only the exact script hashes that changed. The 30-second recovery check selects only new, failed, dirty, or disconnected watches, and restarts resubscribe without rereading unchanged history and balances. Refreshes above 1,000 scripts are paced at 50 scripts per second to protect Electrs during a first baseline or reconnection. The dashboard shows refresh progress, logs include a 30-second heartbeat, and state is checkpointed every 500 completed addresses. Stalled requests time out; repeated connection failures pause the batch and leave unfinished watches for the next automatic retry without replacing saved balances or history.
 
 Transaction history is paginated at 100 transactions per page. Within each transaction card, address lists longer than 10 rows are collapsed to the first 10 and can be expanded on demand; text exports still include the complete list.
 

@@ -35,7 +35,12 @@ signs out existing browser sessions but does not remove watches.
 After the baseline, s/watcher refreshes only addresses that Electrs reports as
 changed. It remembers each address status across restarts, and large baselines
 or reconnects are paced to avoid overwhelming Electrs. A very large first scan
-can therefore take several minutes while the service remains responsive.
+can therefore take several minutes while the service remains responsive. The
+dashboard shows how many addresses have completed, and the service log writes
+a heartbeat every 30 seconds. Progress is saved every 500 addresses. If
+Electrs stops responding, s/watcher pauses after repeated failures, preserves
+the last saved balances and history, and retries unfinished addresses
+automatically.
 
 ## Adding watches
 
