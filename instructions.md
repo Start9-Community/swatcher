@@ -42,6 +42,10 @@ Electrs stops responding, s/watcher pauses after repeated failures, preserves
 the last saved balances and history, and retries unfinished addresses
 automatically.
 
+The same recovery timer keeps notification delivery moving when no address has
+changed. Failed Telegram or Nostr messages retry, quiet-hours queues resume,
+and daily digests can fire on schedule even while every watch is idle.
+
 ## Adding watches
 
 The Web UI accepts:
